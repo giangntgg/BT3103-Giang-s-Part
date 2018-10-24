@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>PreRequisite Dashboard</title>
+        <meta name="description" content="A dashboard on student profiles of your module">
+    </head>
+    
+    <body>
+        
+    <div>
+        <h3> STUDENT PROFILE </h3>
+        <p> This dashboard showcases the basic profiles of your students this year. The profiling includes their years of study, major, grade from prerequsite (optional) and skill levels collected from survey/ prerequisite module data. </p>
+    </div> 
+    
+    <!--colspan6-->
+    <div id="app">
+    {{ Year.title }}
+    <column-chart :data = "Year.data"></column-chart>  
+    </div> 
+    
+    <!--colspan6-->
+    <div id="app">
+    {{ Major.title }}
+    <column-chart :data = "Major.data"></column-chart>  
+    </div>
+    
+    <!--colspan12 -->
+    <div id="app">
+    {{ PrevGrade.title }}
+    <line-chart :data = "PrevGrade.data"></line-chart>  
+    </div>
+    
+    <!--colspan12 -->
+    <div id="app">
+    {{ Skill.title }}
+    <column-chart :data = "Skill.data"></column-chart>     
+    </div>
+        
+    <script src="https://unpkg.com/vue"></script>
+	<script src="https://unpkg.com/chart.js@2.7.2/dist/Chart.bundle.js"></script>
+	<script src="https://unpkg.com/vue-chartkick@0.4.0"></script>
+	<script src="https://gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+	<script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+	
+    <script>
+        var config = {
+            databaseURL: 'https://dataforgiang.firebaseio.com/' //put in your database URL here
+        }
+        
+        firebase.initializeApp(config)
+        var db = firebase.database()
+        var dataRef = db.ref('PreRequisite')
+        
+        new Vue ({
+            el: '#app',
+            data: {
+            },
+            firebase: {
+                Year: {
+                    source: dataRef.child("Year"),
+                    asObject: true,
+                },
+                Major: {
+                    source: dataRef.child("Major"),
+                    asObject: true,
+                },
+                Skill: {
+                    source: dataRef.child("Skill"),
+                    asObject: true,
+                },
+                PrevGrade: {
+                    source: dataRef.child("PrevGrade"),
+                    asObject: true,
+                }
+            } 
+        })
+    </script>    
+    </body>
+</html>
